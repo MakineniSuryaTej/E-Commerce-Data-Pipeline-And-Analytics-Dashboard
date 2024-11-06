@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: Cleaned and standardized customers data
+    columns:
+      - name: customer_id
+        description: Primary key of the customers table
+        tests:
+          - unique
+          - not_null
+      - name: unique_id
+        description: Unique identifier for each customer
+        tests:
+          - not_null
+      - name: zip_code_prefix
+        description: First 5 digits of the customer's zip code
+      - name: city
+        description: Customer's city
+      - name: state
+        description: Customer's state
+  - name: stg_orders
+    description: Cleaned and standardized orders data
+    columns:
+      - name: order_id
+        description: Primary key of the orders table
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to the customers table
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: order_status
+        description: Current status of the order
+      - name: order_purchase_timestamp
+        description: Timestamp when the order was placed
+        tests:
+          - not_null
