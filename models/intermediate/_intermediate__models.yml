@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: int_customer_orders
+    description: "Intermediate model joining customer and order data"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for the customer"
+        tests:
+          - unique
+          - not_null
+      - name: unique_id
+        description: "Unique identifier for the customer across the system"
+        tests:
+          - not_null
+      - name: city
+        description: "City of the customer"
+      - name: state
+        description: "State of the customer"
+      - name: order_id
+        description: "Unique identifier for the order"
+        tests:
+          - not_null
+      - name: order_status
+        description: "Current status of the order"
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was placed"
+        tests:
+          - not_null
+      - name: order_delivered_customer_date
+        description: "Date when the order was delivered to the customer"
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - customer_id
+            - order_id
+  - name: int_order_items_products
+    description: "Intermediate model joining order items with products and orders"
+    columns:
+      - name: order_id
+        description: "Unique identifier for the order"
+        tests:
+          - not_null
+      - name: order_item_id
+        description: "Identifier for the item within the order"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Unique identifier for the product"
+        tests:
+          - not_null
+      - name: seller_id
+        description: "Identifier for the seller"
+      - name: shipping_limit_date
+        description: "Shipping limit date for the item"
+      - name: price
+        description: "Price of the item"
+        tests:
+          - not_null
+      - name: freight_value
+        description: "Freight value for the item"
+      - name: product_category_name
+        description: "Category name of the product"
+      - name: product_weight_g
+        description: "Weight of the product in grams"
+      - name: product_length_cm
+        description: "Length of the product in centimeters"
+      - name: product_height_cm
+        description: "Height of the product in centimeters"
+      - name: product_width_cm
+        description: "Width of the product in centimeters"
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was purchased"
+        tests:
+          - not_null
+      - name: order_status
+        description: "Current status of the order"
